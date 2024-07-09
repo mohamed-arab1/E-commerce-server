@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common';

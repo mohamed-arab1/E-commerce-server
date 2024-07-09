@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, Patch } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { GetCurrentUserId } from 'src/common/decorators/getCurrentUserId.decorator';

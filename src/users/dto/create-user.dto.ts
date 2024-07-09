@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+
 import { Expose } from 'class-transformer';
 import {
   IsEmail,
