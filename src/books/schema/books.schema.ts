@@ -22,6 +22,15 @@ export class Books extends Document {
     @Prop({required: true,})
     genre: string[];
 
+    @Prop({required: true})
+    price: number;
+
+    @Prop({required: true})
+    most_popular: boolean;
+
+    @Prop({required: true})
+    publication_year: number;
+
 }
 
 export const BooksSchema = SchemaFactory.createForClass(Books)
