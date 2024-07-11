@@ -1,8 +1,7 @@
 import { Exclude, Expose, Transform } from 'class-transformer';
-import { CreateUserDto } from './create-user.dto';
+import { CreateLocalUserDto } from './create-local-user.dto';
 
-export class ResponseUserDto extends CreateUserDto {
-  // write another constructor to convert some obj to this class
+export class ResponseUserDto extends CreateLocalUserDto {
   constructor() {
     super();
   }

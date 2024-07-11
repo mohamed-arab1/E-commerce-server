@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
-import { User } from 'src/users/user.schema';
+import { User } from 'src/users/schema/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from 'src/auth/dto/signin.dto';
 import { JwtPayloadWithRt, Tokens } from './types/tokens.type';
@@ -43,7 +43,7 @@ export class AuthService {
     signupDto = {
       ...signupDto,
     };
-    const newUser = await this.userService.createUser(signupDto);
+    const newUser = await this.userService.createLocalUser(signupDto);
 
     const tokens = await this.generateTokens(newUser._id as string);
 
@@ -129,7 +129,7 @@ export class AuthService {
   }
 
   async validateRT(userID: string, rt: string) {
-    const user = await this.userService.findOne(userID);
+    const user = await this.userService.findById(userID);
     if (!user.hashedRT) return false;
 
     const isRTMatch = await bcrypt.compare(rt, user.hashedRT);

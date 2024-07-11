@@ -2,7 +2,7 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { User, UserSchema } from './user.schema';
+import { User, UserSchema } from './schema/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { AuthModule } from 'src/auth/auth.module';
@@ -16,6 +16,9 @@ import { AuthModule } from 'src/auth/auth.module';
           const schema = UserSchema;
 
           schema.pre('save', async function () {
+            if (!this.password) {
+              return;
+            }
             if (this.isNew || this.isModified('password')) {
               const salt = await bcrypt.genSalt(10);
               this.password = await bcrypt.hash(this.password, salt);
