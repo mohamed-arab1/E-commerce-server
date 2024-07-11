@@ -26,7 +26,7 @@ export class UsersController {
   async getProfile(
     @GetCurrentUserId() id: string,
   ): Promise<{ user: ResponseUserDto }> {
-    const user = await this.usersService.findOne(id);
+    const user = await this.usersService.findById(id);
     const userResponse = plainToInstance(ResponseUserDto, user.toObject());
     return { user: userResponse };
   }

@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import { Expose } from 'class-transformer';
 import {
   IsEmail,
@@ -9,7 +7,7 @@ import {
   IsStrongPassword,
 } from 'class-validator';
 
-export class CreateUserDto {
+export class CreateLocalUserDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()

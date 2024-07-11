@@ -4,13 +4,14 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { LocalStrategy } from './strategies/local.strategy';
-import { User, UserSchema } from 'src/users/user.schema';
+import { User, UserSchema } from 'src/users/schema/user.schema';
 import { UsersModule } from 'src/users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalAuthGuard } from '../common/guards/localAuth.guard';
 import { jwtStrategy } from './strategies/accessJwt.strategy';
 import { RefreshJwtStrategy } from './strategies/refreshJwt.strategy';
 import { MongooseModule } from '@nestjs/mongoose';
+import { googleStrategy } from './strategies/googleAuth.strategy';
 
 @Module({
   imports: [
@@ -27,11 +28,12 @@ import { MongooseModule } from '@nestjs/mongoose';
   controllers: [AuthController],
   providers: [
     AuthService,
-    LocalStrategy,
     UsersService,
-    LocalAuthGuard,
+    LocalStrategy,
+    googleStrategy,
     jwtStrategy,
     RefreshJwtStrategy,
+    LocalAuthGuard,
   ],
   exports: [AuthService],
 })

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {
   BadRequestException,
   Inject,
@@ -7,11 +6,12 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './user.schema';
+import { CreateLocalUserDto } from './dto/create-local-user.dto';
+import { User } from './schema/user.schema';
 import { Model } from 'mongoose';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthService } from 'src/auth/auth.service';
+import { CreateOAuthUserDto } from './dto/create-oauth-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -22,7 +22,7 @@ export class UsersService {
     private authService: AuthService,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createLocalUser(createUserDto: CreateLocalUserDto): Promise<User> {
     const userExist = await this.userModel.findOne({
       email: createUserDto.email,
     });
@@ -36,6 +36,25 @@ export class UsersService {
     return user;
   }
 
+  async createOAuthUser(createOAuthUserDto: CreateOAuthUserDto): Promise<User> {
+    const idObject = {
+      [createOAuthUserDto.identityProvider + 'Id']: createOAuthUserDto.id,
+    };
+
+    createOAuthUserDto = { ...createOAuthUserDto, ...idObject };
+    delete createOAuthUserDto.id;
+    delete createOAuthUserDto.identityProvider;
+
+    const user = await this.userModel.findOne(idObject);
+    if (user) {
+      return user;
+    }
+
+    const newUser = await this.userModel.create(createOAuthUserDto);
+    await newUser.save();
+    return newUser;
+  }
+
   async findAll(): Promise<User[]> {
     return await this.userModel.find(
       {},
@@ -43,7 +62,7 @@ export class UsersService {
     );
   }
 
-  async findOne(id: string): Promise<User> {
+  async findById(id: string): Promise<User> {
     const user = await this.userModel.findById(id);
 
     if (!user) {
@@ -68,7 +87,7 @@ export class UsersService {
   }
 
   async remove(id: string) {
-    const user = await this.findOne(id);
+    const user = await this.findById(id);
     if (!user) {
       throw new NotAcceptableException("user doesn't exist");
     }
