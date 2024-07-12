@@ -14,7 +14,7 @@ export class BooksService {
         try{
             const findBook = await this.booksModel.findOne({title: createBookDto.title});
             if(findBook){
-                throw new Error('Book already exists');
+                throw new HttpException('Book already exists', HttpStatus.CONFLICT);
             }
             const newBook = new this.booksModel(createBookDto);
             return await newBook.save();
@@ -29,7 +29,7 @@ export class BooksService {
     async getAllBooks(): Promise<Books[]>{
         try{
             const allBooks =  await this.booksModel.find().exec();
-            return allBooks
+            return allBooks;
         }catch(error){
             throw new HttpException(
                 error.message || 'Failed to get All Books!',
@@ -41,6 +41,9 @@ export class BooksService {
     async getBook(id: string): Promise<Books>{
         try{
             const findBook = await this.booksModel.findById(id);
+            if (!findBook) {
+                throw new HttpException('Book not found', HttpStatus.NOT_FOUND);
+            }
             return findBook
         }catch(error){
             throw new HttpException(
@@ -55,6 +58,10 @@ export class BooksService {
             const findAndUpdate = await this.booksModel.findOneAndUpdate({_id: id},updateBookDto,{
                 new: true
             })
+
+            if (!findAndUpdate) {
+                throw new HttpException('Book not found', HttpStatus.NOT_FOUND);
+            }
             return findAndUpdate;
 
         }catch(error){
@@ -68,6 +75,9 @@ export class BooksService {
     async findAndDelete(id: string): Promise<Books>{
         try{
             const findAndDelete = await this.booksModel.findByIdAndDelete(id);
+            if (!findAndDelete) {
+                throw new HttpException('Book not found', HttpStatus.NOT_FOUND);
+            }
             return findAndDelete;
 
         }catch(error){
