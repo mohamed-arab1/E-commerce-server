@@ -34,7 +34,6 @@ export class AuthService {
   }
 
   async signup(signupDto: SignupDto) {
-    // check if email already exists
     const emailExist = await this.userService.findUserByEmail(signupDto.email);
     if (emailExist) {
       throw new NotAcceptableException('Email already exists');
