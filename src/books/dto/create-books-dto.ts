@@ -4,6 +4,7 @@ import {
     IsString,
     IsNumber,
     IsArray,
+    IsBoolean
 
   } from 'class-validator';
   import { Expose, Transform } from 'class-transformer';
@@ -44,6 +45,19 @@ export class CreateBooksDto {
     @Expose()
     genre: string[];
 
+    @IsNotEmpty()
+    @IsNumber()
+    @Expose()
+    publication_year: number;
 
+    @IsNotEmpty()
+    @IsNumber()
+    @Expose()
+    price: number;
+
+    @IsNotEmpty()
+    @IsBoolean()
+    @Expose()
+    most_popular: boolean;
 
 }
