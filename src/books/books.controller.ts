@@ -1,4 +1,5 @@
-import {
+/* eslint-disable prettier/prettier */
+import { 
   Body,
   Controller,
   Delete,
@@ -6,19 +7,23 @@ import {
   Param,
   Post,
   Put,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBooksDto } from './dto/create-books-dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { plainToInstance } from 'class-transformer';
 import { UpdateBookDto } from './dto/update-book-dto';
+import { GetBookDto } from './dto/get-books-dto';
 
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
-
+  
   @Public()
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   async createBook(@Body() createBooksDto: CreateBooksDto) {
     const book = await this.booksService.createBook(createBooksDto);
     const bookResponse = plainToInstance(CreateBooksDto, book);
@@ -27,14 +32,13 @@ export class BooksController {
 
   @Public()
   @Get()
-  async getBooks(): Promise<CreateBooksDto[]> {
+  async getBooks(): Promise<GetBookDto[]> {
     const books = await this.booksService.getAllBooks();
-    const booksResponse = plainToInstance(CreateBooksDto, books);
-
-    return booksResponse;
+    const booksResponse = plainToInstance(GetBookDto, books); 
+    return booksResponse; 
   }
 
-  @Public()
+  @Public() 
   @Get(':id')
   async getBookById(@Param('id') id: string): Promise<CreateBooksDto> {
     const book = await this.booksService.getBook(id);
@@ -54,7 +58,7 @@ export class BooksController {
     return bookResponse;
   }
 
-  @Public()
+  @Public()  
   @Delete(':id')
   async deleteBook(@Param('id') id: string): Promise<CreateBooksDto> {
     const book = await this.booksService.findAndDelete(id);
