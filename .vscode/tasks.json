@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": [],
+      "label": "npm: start server",
+      "detail": "stert the autolead next server Front-End",
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    }
+  ]
+}
