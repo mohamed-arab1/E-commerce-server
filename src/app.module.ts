@@ -9,10 +9,12 @@ import { AccessJwtGuard } from './common/guards/accessJwt.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BooksModule } from './books/books.module';
+import { FilesController } from './files/files.controller';
+import { FilesModule } from './files/files.module';
 
 @Module({
-  imports: [AppModule, MongooseModule.forRoot(url), UsersModule, AuthModule, BooksModule],
-  controllers: [AppController],
+  imports: [AppModule, MongooseModule.forRoot(url), UsersModule, AuthModule, BooksModule, FilesModule],
+  controllers: [AppController, FilesController],
   providers: [
     AppService,
     {
