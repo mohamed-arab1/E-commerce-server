@@ -20,7 +20,9 @@ import { UpdateBookDto } from './dto/update-book-dto';
 import { GetBookDto } from './dto/get-book-dto';
 import { Request } from 'express';
 import { bookCoverImgInterceptor } from 'src/common/interceptors/bookCoverImage.interceptor';
+import { Public } from 'src/common/decorators/public.decorator';
 
+@Public()
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
