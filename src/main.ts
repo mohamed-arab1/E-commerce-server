@@ -21,10 +21,10 @@ async function bootstrap() {
 
   registerGlobals(app);
   app.enableCors({
-    origin: "*",
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept',
-  })
+  });
   await app.listen(process.env.APP_PORT || 3030);
 }
 bootstrap();
