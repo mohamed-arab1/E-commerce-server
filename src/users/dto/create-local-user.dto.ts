@@ -10,7 +10,9 @@ import {
   ValidatorConstraintInterface,
   registerDecorator,
   ValidationOptions,
+  IsEnum,
 } from 'class-validator';
+import { UserRole } from '../schema/user-role.enum';
 
 @ValidatorConstraint({ name: 'isPasswordMatching', async: false })
 class IsPasswordMatchingConstraint implements ValidatorConstraintInterface {
@@ -73,4 +75,10 @@ export class CreateLocalUserDto {
   @Expose()
   @IsPasswordMatching('password')
   passwordConfirm: string;
+
+  @IsOptional()
+  @IsString()
+  @IsEnum(UserRole)
+  @Expose()
+  role: UserRole;
 }

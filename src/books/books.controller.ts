@@ -21,9 +21,11 @@ import { GetBookDto } from './dto/get-book-dto';
 import { Request } from 'express';
 import { bookCoverImgInterceptor } from 'src/common/interceptors/bookCoverImage.interceptor';
 import { Public } from 'src/common/decorators/public.decorator';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { UserRole } from 'src/users/schema/user-role.enum';
 
-@Public()
 @Controller('books')
+@Roles(UserRole.ADMIN)
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
@@ -47,13 +49,16 @@ export class BooksController {
     return bookResponse;
   }
 
+  @Public()
   @Get()
   async getBooks(): Promise<GetBookDto[]> {
+    console.log('getBooks');
     const books = await this.booksService.getAllBooks();
     const booksResponse = plainToInstance(GetBookDto, books);
     return booksResponse;
   }
 
+  @Public()
   @Get(':id')
   async getBookById(@Param('id') id: string): Promise<GetBookDto> {
     const book = await this.booksService.getBook(id);

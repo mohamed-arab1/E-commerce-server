@@ -11,15 +11,27 @@ import { AppService } from './app.service';
 import { BooksModule } from './books/books.module';
 import { FilesController } from './files/files.controller';
 import { FilesModule } from './files/files.module';
+import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
-  imports: [AppModule, MongooseModule.forRoot(url), UsersModule, AuthModule, BooksModule, FilesModule],
+  imports: [
+    AppModule,
+    MongooseModule.forRoot(url),
+    UsersModule,
+    AuthModule,
+    BooksModule,
+    FilesModule,
+  ],
   controllers: [AppController, FilesController],
   providers: [
     AppService,
     {
       provide: APP_GUARD,
       useClass: AccessJwtGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })
