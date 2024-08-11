@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { UserRole } from './user-role.enum';
 
 @Schema()
 export class User extends Document {
@@ -27,6 +28,9 @@ export class User extends Document {
 
   @Prop()
   avatar?: string;
+
+  @Prop({ enum: UserRole, default: UserRole.CLIENT })
+  role: UserRole;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

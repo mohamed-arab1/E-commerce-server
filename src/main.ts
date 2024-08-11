@@ -7,10 +7,11 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
+export function registerGlobals(app: INestApplication) {
   app.enableCors();
+
+  app.setGlobalPrefix('api');
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -19,17 +20,6 @@ async function bootstrap() {
     }),
   );
 
-  registerGlobals(app);
-  app.enableCors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept',
-  });
-  await app.listen(process.env.APP_PORT || 3030);
-}
-bootstrap();
-
-export function registerGlobals(app: INestApplication) {
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector), {
       strategy: 'exposeAll',
@@ -38,3 +28,9 @@ export function registerGlobals(app: INestApplication) {
     }),
   );
 }
+
+(async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  registerGlobals(app);
+  await app.listen(process.env.APP_PORT || 3030);
+})();
